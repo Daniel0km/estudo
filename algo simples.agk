@@ -1,5 +1,5 @@
 //config da tala
-SetWindowTitle("teste")
+SetWindowTitle("jogo")
 SetWindowSize(1000,800,0)
 SetVirtualResolution(1000,800)
 
@@ -24,6 +24,8 @@ Global B2 as integer
 Global B3 as integer
 Global B4 as integer
 Global b as integer
+Global m as integer
+Global tipocenario as integer
 //botões
 BEJ1p1 = CreateSprite(LoadImage("Fclassico.png"))
 BEJ1p2 = CreateSprite(LoadImage("Fpanela.png"))
@@ -45,11 +47,9 @@ B2 = LoadImage("bola2.png")
 B3 = LoadImage("bala3.png")
 B4 = LoadImage("bola4.png")
 function TelaVitoria(vencedor)
-
         ClearScreen()
         if vencedor = 1
-			Vitoria = CreateSprite(LoadImage("VJ!.png"))
-			
+			Vitoria = CreateSprite(LoadImage("VJ!.png"))	
         else
             if modoJogo = 2
 				Vitoria = CreateSprite(LoadImage("Vrobo.png"))
@@ -58,21 +58,17 @@ function TelaVitoria(vencedor)
 			endif
         endif
         setspritesize(Vitoria,1000,800)
-
+        
 	do
-
         if GetPointerPressed() = 1
             MenuPrincipal()
             exit
          endif
-
         Sync()
     loop
-
     
 endfunction
 function EscolhaJogador()
-
     SetSpriteSize(botao3, 400, 457)
     SetSpritePosition(botao3, 50, 100)
     SetSpriteVisible(botao3, 1)
@@ -80,9 +76,6 @@ function EscolhaJogador()
     SetSpriteSize(botao4, 400, 457)
     SetSpritePosition(botao4, 550, 100)
     SetSpriteVisible(botao4, 1)
-    
-    
-    
     do
         x = GetPointerX()
         y = GetPointerY()
@@ -110,12 +103,9 @@ function EscolhaJogador()
     
 endfunction
 function MenuPrincipal()
-	
-    SetSpriteActive(botao3,0)
+	SetSpriteActive(botao3,0)
     SetSpriteActive(botao4,0)
-
-	
-	 if Vitoria > 0 then DeleteSprite(Vitoria)
+	if Vitoria > 0 then DeleteSprite(Vitoria)
 	
 	b = createsprite(LoadImage("Menu.png"))
 	SetSpriteDepth(b, 100)
@@ -152,8 +142,7 @@ function MenuPrincipal()
 	
 endfunction
 function SkinJogador1()
-	
-    // Posiciona os botões de escolha
+	// os botões de escolha
     SetSpriteSize(BEJ1p1, 225, 330)
     SetSpritePosition(BEJ1p1, 100, 100)
     SetSpriteVisible(BEJ1p1, 1)
@@ -277,9 +266,6 @@ function skinbola()
     
     BEB4 = createsprite(LoadImage("Fbola2.png"))
     SetSpritePosition(BEB4, 700, 400)
-    
-	
-
     do
 		Print("                  escolha a bola")
         x = GetPointerX()
@@ -327,7 +313,7 @@ SetSpritePosition(bola, 500, 450)
 //variaveis
 velocidadeJ1# = 5
 velocidadeJ2# = 5
-
+tipocenario = Random(0,2)
 pontoJ1 = 0
 pontoJ2 = 0
 
@@ -379,6 +365,20 @@ select Tipobola
 		SetSpriteImage(bola, B4)
 		velocidadeBX# = 8
 		velocidadeBY# = 3.0
+	endcase
+endselect
+select tipocenario
+	case 0:
+		C = CreateSprite(LoadImage("classico.png"))
+		SetSpriteDepth(C, 110)
+	endcase
+	case 1:
+		C = CreateSprite(LoadImage("luta.png"))
+		SetSpriteDepth(C, 110)
+	endcase
+	case 2:
+		C = CreateSprite(LoadImage("pingpong.png"))
+		SetSpriteDepth(C, 110)
 	endcase
 endselect
 
@@ -462,7 +462,8 @@ do
 		SetSpritePosition(J2, 1, 1)
 		SetSpriteSize(bola,1,1)
 		SetSpritePosition(bola, 1, 1)
-		
+		SetSpriteSize(c,1,1)
+		SetSpritePosition(c, 1, 1)
 		TelaVitoria(1)
 
      elseif pontoJ2 >= 3 
@@ -472,7 +473,8 @@ do
 		SetSpritePosition(J2, 1, 1)
 		SetSpriteSize(bola,1,1)
 		SetSpritePosition(bola, 1, 1)
-         
+         SetSpriteSize(c,1,1)
+		SetSpritePosition(c, 1, 1)
         TelaVitoria(2)
     endif
 
