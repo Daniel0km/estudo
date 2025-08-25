@@ -1,49 +1,485 @@
+//config da tala
+SetWindowTitle("teste")
+SetWindowSize(1000,800,0)
+SetVirtualResolution(1000,800)
 
-[apk_settings]
-alias=
-app_icon_path=
-notif_icon_path=
-app_name=
-app_type=0
-game_circle_api_key=
-keystore_path=
-orientation=0
-output_path=
-ouya_icon_path=
-package_name=
-permission_flags=7
-play_app_id=
-sdk_version=0
-version_name=
-version_number=0
-firebase_config_path=
+Global modojogo as integer
+Global TipospriteJ1 as integer
+Global TipospriteJ2 as integer
+Global Tipobola as integer
+Global Vitoria as integer
+Global J1 as integer
+Global J2 as integer
+Global bola as integer
+Global BEJ1p1 as integer
+Global BEJ1p2 as integer
+Global BEJ1p3 as integer
+Global BEJ1p4 as integer
+Global botao3 as integer
+Global botao4 as integer
+Global panela as integer
+Global raquete as integer
+Global banana as integer
+Global B2 as integer
+Global B3 as integer
+Global B4 as integer
+Global b as integer
+//botões
+BEJ1p1 = CreateSprite(LoadImage("Fclassico.png"))
+BEJ1p2 = CreateSprite(LoadImage("Fpanela.png"))
+BEJ1p3 = CreateSprite(LoadImage("Fraquete.png"))
+BEJ1p4 = CreateSprite(LoadImage("Fbanana.png"))
+botao3 = CreateSprite(LoadImage("robo.png"))
+botao4 = CreateSprite(LoadImage("j2.png"))
+SetSpriteVisible(BEJ1p1, 0)
+SetSpriteVisible(BEJ1p2, 0)
+SetSpriteVisible(BEJ1p3, 0)
+SetSpriteVisible(BEJ1p4, 0)
+SetSpriteVisible(botao3, 0)
+SetSpriteVisible(botao4, 0)
+//skins
+panela = LoadImage("panela.png")
+raquete = LoadImage("raquete.png")
+banana = LoadImage("banana.png")
+B2 = LoadImage("bola2.png")
+B3 = LoadImage("bala3.png")
+B4 = LoadImage("bola4.png")
+function TelaVitoria(vencedor)
 
-[ipa_settings]
-app_icon_path=
-app_name=
-build_number=
-device_type=0
-facebook_id=
-orientation=0
-output_path=
-prov_profile_path=
-splash_1136_path=
-splash_2048_path=
-splash_960_path=
-uses_ads=0
-version_number=
-firebase_config_path=
+        ClearScreen()
+        if vencedor = 1
+			Vitoria = CreateSprite(LoadImage("VJ!.png"))
+			
+        else
+            if modoJogo = 2
+				Vitoria = CreateSprite(LoadImage("Vrobo.png"))
+			else
+				Vitoria = CreateSprite(LoadImage("VJ2.png"))
+			endif
+        endif
+        setspritesize(Vitoria,1000,800)
 
-[html5_settings]
-commands_used=0
-dynamic_memory=0
-output_path=
+	do
 
-[projectfiles]
-FILE_0=main.agc;-1
+        if GetPointerPressed() = 1
+            MenuPrincipal()
+            exit
+         endif
 
-[files]
-FILE_NAME_0=1;main.agc;7100;0
+        Sync()
+    loop
 
-[project]
-description=
+    
+endfunction
+function EscolhaJogador()
+
+    SetSpriteSize(botao3, 400, 457)
+    SetSpritePosition(botao3, 50, 100)
+    SetSpriteVisible(botao3, 1)
+
+    SetSpriteSize(botao4, 400, 457)
+    SetSpritePosition(botao4, 550, 100)
+    SetSpriteVisible(botao4, 1)
+    
+    
+    
+    do
+        x = GetPointerX()
+        y = GetPointerY()
+        if timer() > 1
+        if GetPointerPressed() = 1
+            if GetSpriteHitTest(botao3, x, y)
+                modoJogo = 2
+                exit
+            elseif GetSpriteHitTest(botao4, x, y)
+                modoJogo = 1
+                exit
+            endif
+        endif
+        endif
+        Sync()
+        
+    loop
+    // Esconde os botões após escolher
+    SetSpriteVisible(botao3, 0)
+    SetSpriteActive(botao3,0)
+    SetSpriteActive(botao4,0)
+    SetSpriteVisible(botao4, 0)
+    
+    SkinJogador1()
+    
+endfunction
+function MenuPrincipal()
+	
+    SetSpriteActive(botao3,0)
+    SetSpriteActive(botao4,0)
+
+	
+	 if Vitoria > 0 then DeleteSprite(Vitoria)
+	
+	b = createsprite(LoadImage("Menu.png"))
+	SetSpriteDepth(b, 100)
+	
+	botao1 = CreateSprite(LoadImage("comecar1.png"))
+	SetSpriteSize(botao1,646,151)
+	SetSpritePosition(botao1, 177,340)
+	SetSpriteDepth(botao1, 10)
+	
+	botao2 = CreateSprite(LoadImage("sair1.png"))
+	SetSpriteSize(botao2,646,151)
+	SetSpritePosition(botao2, 177, 556)
+	SetSpriteDepth(botao2, 10)
+	do
+		x = GetPointerX()
+		y = GetPointerY()
+		
+		if GetPointerPressed() = 1
+			if GetSpriteHitTest(botao1,x,y)
+				SetSpriteVisible(b, 0)
+				SetSpriteVisible(botao1, 0)
+				SetSpriteActive(botao1,0)
+				SetSpriteVisible(botao2, 0)
+				SetSpriteActive(botao2,0)
+				EscolhaJogador()
+			elseif GetSpriteHitTest(botao2,x,y)
+				end
+			endif
+		endif
+
+		Sync()
+	loop
+
+	
+endfunction
+function SkinJogador1()
+	
+    // Posiciona os botões de escolha
+    SetSpriteSize(BEJ1p1, 225, 330)
+    SetSpritePosition(BEJ1p1, 100, 100)
+    SetSpriteVisible(BEJ1p1, 1)
+    
+    SetSpriteSize(BEJ1p2, 225, 330)
+    SetSpritePosition(BEJ1p2, 100, 400)
+    SetSpriteVisible(BEJ1p2, 1)
+
+    SetSpriteSize(BEJ1p3, 225, 330)
+    SetSpritePosition(BEJ1p3, 700, 100)
+    SetSpriteVisible(BEJ1p3, 1)
+    
+    SetSpriteSize(BEJ1p4, 225, 330)
+    SetSpritePosition(BEJ1p4, 700, 400)
+    SetSpriteVisible(BEJ1p4, 1)
+
+    // Apaga a imagem de fundo do menu se existir
+    if b > 0 then DeleteSprite(b)
+    ResetTimer()
+    
+
+    do
+		Print("                  escolha jogador 1")
+        x = GetPointerX()
+        y = GetPointerY()
+		
+		if timer() > 0.5
+        if GetPointerPressed() = 1
+            if GetSpriteHitTest(BEJ1p1, x, y)
+                TipospriteJ1 = 0
+                exit
+            elseif GetSpriteHitTest(BEJ1p2, x, y)
+                TipospriteJ1 = 1
+                exit
+            elseif GetSpriteHitTest(BEJ1p3, x, y)
+                TipospriteJ1 = 2
+                exit
+            elseif GetSpriteHitTest(BEJ1p4, x, y)
+                TipospriteJ1 = 3
+                exit
+            endif
+        endif
+        endif
+ 
+
+        Sync()
+    loop
+
+    // Oculta os botões de escolha
+    SetSpriteVisible(BEJ1p1, 0)
+    SetSpriteVisible(BEJ1p2, 0)
+    SetSpriteVisible(BEJ1p3, 0)
+    SetSpriteVisible(BEJ1p4, 0)
+
+    SkinJogador2()
+endfunction
+function SkinJogador2()
+		
+    SetSpriteVisible(BEJ1p1, 1)
+    SetSpriteVisible(BEJ1p2, 1)
+    SetSpriteVisible(BEJ1p3, 1)
+    SetSpriteVisible(BEJ1p4, 1)
+    
+    SetSpriteActive(BEJ1p1,1)
+    SetSpriteActive(BEJ1p2,1)
+    SetSpriteActive(BEJ1p3,1)
+    SetSpriteActive(BEJ1p4,1)
+    
+    ResetTimer()
+
+    do
+		Print("                  escolha jogador 2")
+        x = GetPointerX()
+        y = GetPointerY()
+
+		if Timer() > 1
+			if GetPointerPressed() = 1
+				if GetSpriteHitTest(BEJ1p1, x, y)
+					TipospriteJ2 = 0
+					exit
+				elseif GetSpriteHitTest(BEJ1p2, x, y)
+					TipospriteJ2 = 1
+					exit
+				elseif GetSpriteHitTest(BEJ1p3, x, y)
+					TipospriteJ2 = 2
+					exit
+				elseif GetSpriteHitTest(BEJ1p4, x, y)
+					TipospriteJ2 = 3
+					exit
+				endif
+			endif
+        endif
+
+        Sync()
+    loop
+
+    // Oculta os botões de escolha
+    SetSpriteVisible(BEJ1p1, 0)
+    SetSpriteVisible(BEJ1p2, 0)
+    SetSpriteVisible(BEJ1p3, 0)
+    SetSpriteVisible(BEJ1p4, 0)
+
+	skinbola()
+endfunction
+function skinbola()
+    
+    SetSpriteActive(BEJ1p1,0)
+    SetSpriteActive(BEJ1p2,0)
+    SetSpriteActive(BEJ1p3,0)
+    SetSpriteActive(BEJ1p4,0)
+    
+    // Posiciona os botões de escolha
+    BEB1 = createsprite(LoadImage("Fbola4.png"))
+    SetSpritePosition(BEB1, 100, 100)
+
+    BEB2 = createsprite(LoadImage("Fbola1.png"))
+    SetSpritePosition(BEB2, 100, 400)
+
+    BEB3 = createsprite(LoadImage("Fbola3.png"))
+    SetSpritePosition(BEB3, 700, 100)
+    
+    BEB4 = createsprite(LoadImage("Fbola2.png"))
+    SetSpritePosition(BEB4, 700, 400)
+    
+	
+
+    do
+		Print("                  escolha a bola")
+        x = GetPointerX()
+        y = GetPointerY()
+
+		if Timer() > 1
+			if GetPointerPressed() = 1
+				if GetSpriteHitTest(BEB1, x, y)
+					Tipobola = 0
+					exit
+				elseif GetSpriteHitTest(BEB2, x, y)
+					Tipobola = 1
+					exit
+				elseif GetSpriteHitTest(BEB3, x, y)
+					Tipobola = 2
+					exit
+				elseif GetSpriteHitTest(BEB4, x, y)
+					Tipobola = 3
+					exit
+				endif
+			endif
+        endif
+
+        Sync()
+    loop
+
+    // Oculta os botões de escolha
+    SetSpriteVisible(BEB1, 0)
+    SetSpriteVisible(BEB2, 0)
+    SetSpriteVisible(BEB3, 0)
+    SetSpriteVisible(BEB4, 0)
+
+	jogo()
+endfunction
+function jogo()
+J1 = CreateSprite(CreateImageColor(255,255,255,255))
+J2 = CreateSprite(CreateImageColor(255,255,255,255))
+bola = CreateSprite(CreateImageColor(255,255,255,255))
+
+//posições iniciais
+SetSpritePosition(J1, 20, 50)
+SetSpritePosition(J2, 960, 50)
+SetSpritePosition(bola, 500, 450)
+
+//variaveis
+velocidadeJ1# = 5
+velocidadeJ2# = 5
+
+pontoJ1 = 0
+pontoJ2 = 0
+
+select TipospriteJ1
+	case 1:
+		SetSpriteImage(J1, panela)
+		velocidadeJ1# = velocidadeJ1#+2.5
+	endcase
+	case 2:
+		SetSpriteImage(J1, raquete)
+		velocidadeJ1# = velocidadeJ1#*3
+	endcase
+	case 3:
+		SetSpriteImage(J1, banana)
+		velocidadeJ1# = velocidadeJ1# *4
+	endcase
+endselect
+select TipospriteJ2
+	case 1:
+		SetSpriteImage(J2, panela)
+		velocidadeJ2# = velocidadeJ2#+2.5
+	endcase
+	case 2:
+		SetSpriteImage(J2, raquete)
+		velocidadeJ2# = velocidadeJ2#*3
+	endcase
+	case 3:
+		SetSpriteImage(J2, banana)
+		velocidadeJ2# = velocidadeJ2# *4
+
+	endcase
+endselect
+select Tipobola
+	case 0:
+		velocidadeBY# = 4
+		velocidadeBX# = 3
+	endcase
+	case 1:
+		SetSpriteImage(bola, B2)
+		velocidadeBY# = 8
+		velocidadeBX# = 7
+	endcase
+	case 2:
+		SetSpriteImage(bola, B3)
+		velocidadeBY# = 9
+		velocidadeBX# = 6
+	endcase
+	case 3:
+		SetSpriteImage(bola, B4)
+		velocidadeBX# = 8
+		velocidadeBY# = 3.0
+	endcase
+endselect
+
+//tamanhos
+SetSpriteSize(J1, 20, 200)
+SetSpriteSize(J2, 20, 200)
+SetSpriteSize(bola, 30, 30)
+
+do
+	//MOVIMENTAÇÃO
+	// jogador 1
+	if GetRawKeyState(87) = 1 then SetSpriteY(J1, GetSpriteY(J1) - velocidadeJ1#)
+    if GetRawKeyState(83) = 1 then SetSpriteY(J1, GetSpriteY(J1) + velocidadeJ1#)
+    
+    // jogador 2(automatico)
+    if modoJogo = 2
+		if GetSpriteY(J2) + 50 < GetSpriteY(bola)
+        SetSpriteY(J2, GetSpriteY(J2) + velocidadeJ2#)
+    elseif GetSpriteY(J2) + 50 > GetSpriteY(bola)
+        SetSpriteY(J2, GetSpriteY(J2) - velocidadeJ2#)
+    endif
+    
+	elseif modoJogo = 1
+		if GetRawKeyState(38) = 1 then SetSpriteY(J2, GetSpriteY(J2) - velocidadeJ2#)
+		if GetRawKeyState(40) = 1 then SetSpriteY(J2, GetSpriteY(J2) + velocidadeJ2#)
+	
+	endif
+	
+	// da bola
+	bx# = GetSpriteX(bola)
+    by# = GetSpriteY(bola)
+    bx# = bx# + velocidadeBX#
+    by# = by# + velocidadeBY#
+    SetSpritePosition(bola, bx#, by#)
+	
+	//limites da tela
+	if GetSpriteY(J1) < 0 then SetSpriteY(J1, 0)
+    if GetSpriteY(J1) > 600 then SetSpriteY(J1, 600)
+
+    if GetSpriteY(J2) < 0 then SetSpriteY(J2, 0)
+    if GetSpriteY(J2) > 600 then SetSpriteY(J2, 600)
+    
+    //COLISÃO
+    // bola com os limites
+    if by# < 0 or by# > 780 then velocidadeBY# = -velocidadeBY#
+    
+     // COLISÃO bola com jogador 1
+	if bx# < 40 and by# + 20 > GetSpriteY(J1) and by# < GetSpriteY(J1) + 200
+		velocidadeBX# = -velocidadeBX#
+	endif
+
+	// COLISÃO bola com jogador 2
+	if bx# + 20 > 960 and by# + 20 > GetSpriteY(J2) and by# < GetSpriteY(J2) + 200
+		velocidadeBX# = -velocidadeBX#
+	endif
+	
+	// PONTOS
+	if bx# < 0
+		pontoJ2 = pontoJ2 + 1
+		SetSpritePosition(bola, 500, 400)
+		velocidadeBX# = velocidadeBX#
+		velocidadeBY# = velocidadeBY#
+	endif
+
+	if bx# > 1000
+		pontoJ1 = pontoJ1 + 1
+		SetSpritePosition(bola, 500, 400)
+		velocidadeBX# = -velocidadeBX#
+		velocidadeBY# = -velocidadeBY#
+	endif
+
+    // PLACAR
+        Print("                  Jogador 1: " + str(pontoJ1))
+        Print("                  Jogador 2: " + str(pontoJ2))
+
+    // Verifica vitória
+    if pontoJ1 >= 3 
+		SetSpriteSize(J1,1,1)
+		SetSpritePosition(J1, 1, 1)
+		SetSpriteSize(J2,1,1)
+		SetSpritePosition(J2, 1, 1)
+		SetSpriteSize(bola,1,1)
+		SetSpritePosition(bola, 1, 1)
+		
+		TelaVitoria(1)
+
+     elseif pontoJ2 >= 3 
+        SetSpriteSize(J1,1,1)
+		SetSpritePosition(J1, 1, 1)
+		SetSpriteSize(J2,1,1)
+		SetSpritePosition(J2, 1, 1)
+		SetSpriteSize(bola,1,1)
+		SetSpritePosition(bola, 1, 1)
+         
+        TelaVitoria(2)
+    endif
+
+  
+	Sync()
+loop
+endfunction
+do
+	MenuPrincipal()
+loop
